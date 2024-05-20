@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node tsc-node src/index.ts",
-    "build": "prisma generate"
+    "start": "npx ts-node src/index.ts",
+    "build": "npx tsc"
   },
   "keywords": [],
   "author": "",
