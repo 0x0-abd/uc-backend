@@ -33,7 +33,7 @@ export const register = async (req: Request, res: Response) => {
         res.cookie("jwt", token, {
             path: "/", // Cookie is accessible from all paths
             expires: new Date(Date.now() + maxAge), // Cookie expires in 1 day
-            // secure: true, // Cookie will only be sent over HTTPS
+            secure: true, // Cookie will only be sent over HTTPS
             httpOnly: true, // Cookie cannot be accessed via client-side scripts
             sameSite: "strict"
         });
