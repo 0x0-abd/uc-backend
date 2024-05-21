@@ -35,7 +35,7 @@ export const register = async (req: Request, res: Response) => {
             expires: new Date(Date.now() + maxAge), // Cookie expires in 1 day
             secure: true, // Cookie will only be sent over HTTPS
             httpOnly: true, // Cookie cannot be accessed via client-side scripts
-            sameSite: "strict"
+            sameSite: "none"
         });
         return res.status(200).send({
             success: true,
@@ -76,7 +76,7 @@ export const login = async (req: Request, res: Response) => {
             expires: new Date(Date.now() + maxAge), // Cookie expires in 1 day
             secure: true, // Cookie will only be sent over HTTPS
             httpOnly: true, // Cookie cannot be accessed via client-side scripts
-            sameSite: "strict"
+            sameSite: "none"
         });
         // console.log(token)
         return res.status(200).send({
