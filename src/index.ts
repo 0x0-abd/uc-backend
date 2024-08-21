@@ -6,10 +6,13 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/user";
 import authRoutes from "./routes/auth";
 import chatRoutes from "./routes/protected"
+import mediaRoutes from "./routes/media"
+import sessionRoutes from "./routes/sessions"
 import cors from "cors";
 import cookieParser from "cookie-parser"
 import { UserPayload } from "./middleware/authenticateToken"
 import { Server} from "socket.io"
+import { deleteImage, getImageUrl } from "./controllers/mediaController";
 
 declare global {
     namespace Express {
@@ -25,7 +28,7 @@ const app: Express = express();
 const server = http.createServer(app)
 const io = new Server(server, {
   cors: {
-    origin: 'https://uc-frontend-five.vercel.app',
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -39,14 +42,24 @@ io.on('connection', (socket) => {
 
   socket.on('send_message', async (data) => {
     // console.log(data)
+    if(data.imageId) {
+      // console.log(data.imageId)
+      try{
+        data.imageId = await getImageUrl(data.imageId);
+      } catch (e) {
+        console.log(e)
+      }
+    }
     const added = await prisma.message.create({data})
     // console.log(added)
     try{
       const deleted = await prisma.message.delete({ where: {id:added.id-30}})
-      // console.log(deleted)
+      if(deleted.imageId) await deleteImage(deleted.imageId);
     } catch(e) {
       console.log("No message deleted")
     }
+
+    // console.log(added)
     socket.broadcast.emit("recieve_message", added)
   })
 
@@ -57,7 +70,7 @@ io.on('connection', (socket) => {
 
 const port = process.env.PORT;
 app.use(cors({
-  origin: 'https://uc-frontend-five.vercel.app',
+  origin: 'http://localhost:3000',
   credentials: true
 }));
 app.use(express.json())
@@ -66,6 +79,8 @@ app.use(cookieParser())
 app.use("/user",userRoutes(prisma));
 app.use("/auth",authRoutes(prisma));
 app.use("/chat",chatRoutes(prisma));
+app.use("/sessions", sessionRoutes);
+app.use("/media",mediaRoutes(prisma));
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Serverrr');

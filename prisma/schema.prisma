@@ -14,11 +14,12 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
+  id       Int     @id @default(autoincrement())
+  username String  @unique
   name     String
-  password String
-  role     Role   @default(USER)
+  password String?
+  role     Role    @default(USER)
+  email    String  @unique
 }
 
 model Message {
@@ -28,6 +29,7 @@ model Message {
   message  String
   role     Role
   time     DateTime @default(now())
+  imageId  String?
 }
 
 enum Role {
