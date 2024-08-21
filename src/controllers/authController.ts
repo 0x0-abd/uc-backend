@@ -144,7 +144,7 @@ export const signOut = async (req: Request, res: Response) => {
         path: "/",
         secure: true,
         httpOnly: true,
-        sameSite: "strict"
+        sameSite: "none"
     });
     return res.status(200).send({
         success: true,

@@ -155,7 +155,7 @@ const signOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         path: "/",
         secure: true,
         httpOnly: true,
-        sameSite: "strict"
+        sameSite: "none"
     });
     return res.status(200).send({
         success: true,
