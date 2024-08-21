@@ -28,7 +28,7 @@ const app: Express = express();
 const server = http.createServer(app)
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://uc-frontend-five.vercel.app",
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
 
 const port = process.env.PORT;
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://uc-frontend-five.vercel.app',
   credentials: true
 }));
 app.use(express.json())
